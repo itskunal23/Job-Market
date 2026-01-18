@@ -1,0 +1,3 @@
+# RoleWithAI Python Scripts Requirements
+# No external dependencies required for the truth score calculator
+# Add any future dependencies here

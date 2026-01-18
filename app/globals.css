@@ -1,0 +1,297 @@
+@import url('https://fonts.googleapis.com/css2?family=Lora:ital,wght@0,400;0,500;0,600;1,400&display=swap');
+@import url('https://fonts.googleapis.com/css2?family=Merriweather:ital,wght@0,400;0,700;1,400&display=swap');
+
+@tailwind base;
+@tailwind components;
+@tailwind utilities;
+
+:root {
+  --latte-foam: #FAF8F5;
+  --ceramic-white: #FFFFFF;
+  --crema-gold: #C89F65;
+  --cold-brew: #AFA59B;
+  --espresso: #4A3F35;
+  --parchment: #F4EFEA;
+  --border-subtle: #E5E0DA;
+  --skip-button: #8C7C6D;
+}
+
+@layer base {
+  body {
+    @apply bg-latte text-espresso antialiased;
+    font-family: 'Inter', -apple-system, BlinkMacSystemFont, 'Segoe UI', Roboto, sans-serif;
+    background-color: var(--latte-foam);
+  }
+}
+
+@layer components {
+  /* Café Study Design System */
+  
+  /* Ceramic White Card - Warm, soft shadow */
+  .rolewithai-card {
+    background: var(--ceramic-white);
+    border-radius: 24px;
+    padding: 2rem;
+    box-shadow: 0 8px 30px rgba(74, 63, 53, 0.05);
+    transition: transform 0.5s cubic-bezier(0.4, 0, 0.2, 1), box-shadow 0.5s ease;
+  }
+  
+  .rolewithai-card:hover {
+    transform: translateY(-2px);
+    box-shadow: 0 12px 40px rgba(74, 63, 53, 0.08);
+  }
+  
+  /* Job Card - Wide Horizontal Layout */
+  .job-card {
+    @apply rolewithai-card;
+    min-height: 200px;
+  }
+  
+  .job-card-high-intent {
+    border: 2px solid var(--crema-gold);
+    animation: pulse-border 3s ease-in-out infinite;
+  }
+  
+  .job-card-low-truth {
+    opacity: 0.75; /* Ghost jobs de-emphasized */
+  }
+  
+  @keyframes pulse-border {
+    0%, 100% {
+      border-color: rgba(200, 159, 101, 0.3);
+      box-shadow: 0 0 0 0 rgba(200, 159, 101, 0.1);
+    }
+    50% {
+      border-color: rgba(200, 159, 101, 0.6);
+      box-shadow: 0 0 0 4px rgba(200, 159, 101, 0.05);
+    }
+  }
+  
+  /* Truth Score Ring - Café Study Colors */
+  .truth-score-ring {
+    font-family: 'Lora', 'Merriweather', serif;
+    font-size: 2.5rem;
+    @apply w-20 h-20 rounded-full flex items-center justify-center font-semibold;
+    transition: all 0.5s ease;
+  }
+  
+  .truth-score-high {
+    color: var(--crema-gold);
+    border: 2px solid var(--crema-gold);
+  }
+  
+  .truth-score-medium {
+    color: var(--espresso);
+    border: 2px solid var(--espresso);
+  }
+  
+  .truth-score-low {
+    color: var(--cold-brew);
+    border: 2px solid var(--cold-brew);
+  }
+  
+  /* Ghost Risk Badges - Café Study */
+  .ghost-risk-low {
+    @apply bg-crema-50 text-crema-600;
+  }
+  
+  .ghost-risk-medium {
+    @apply bg-parchment text-coldbrew;
+  }
+  
+  .ghost-risk-high {
+    @apply bg-parchment text-coldbrew;
+  }
+  
+  /* RoleWithAI Dialogue Bubble - Café Study Style */
+  .rolewithai-bubble {
+    background: var(--parchment);
+    @apply rounded-2xl p-6;
+    border: 1px solid var(--border-subtle);
+    transition: all 0.5s ease;
+  }
+  
+  /* RoleWithAI Insight Box - Café Study Style */
+  .rolewithai-insight-box {
+    background: var(--parchment);
+    @apply rounded-xl p-4 mb-4;
+    border: 1px solid var(--border-subtle);
+  }
+  
+  /* RoleWithAI Voice - Warm serif for warmth */
+  .rolewithai-voice {
+    font-family: 'Lora', 'Merriweather', Georgia, serif;
+    line-height: 1.8;
+    font-size: 1.1rem;
+    font-weight: 400;
+    color: var(--espresso);
+  }
+  
+  /* RoleWithAI's Direct Guidance - More prominent */
+  .rolewithai-guidance {
+    @apply rolewithai-voice;
+    font-size: 1.2rem;
+    font-weight: 500;
+    color: var(--espresso);
+  }
+  
+  /* Handwritten-style support notes */
+  .support-note {
+    @apply rolewithai-voice;
+    font-family: 'Lora', 'Merriweather', Georgia, serif;
+    font-style: italic;
+    line-height: 1.9;
+    color: var(--espresso);
+    opacity: 0.8;
+  }
+  
+  /* Match Card - Handwritten note feel */
+  .match-card {
+    @apply rolewithai-card;
+    background: linear-gradient(to bottom, #FFFFFF 0%, #FEFEFE 100%);
+    box-shadow: 0 4px 20px rgba(27, 59, 90, 0.08), 0 0 0 1px rgba(0, 163, 255, 0.05);
+  }
+  
+  .match-card-high-intent {
+    box-shadow: 0 4px 20px rgba(0, 163, 255, 0.15), 0 0 0 2px rgba(0, 163, 255, 0.1);
+    animation: pulse-glow 3s ease-in-out infinite;
+  }
+  
+  @keyframes pulse-glow {
+    0%, 100% {
+      box-shadow: 0 4px 20px rgba(0, 163, 255, 0.15), 0 0 0 2px rgba(0, 163, 255, 0.1);
+    }
+    50% {
+      box-shadow: 0 4px 25px rgba(0, 163, 255, 0.2), 0 0 0 3px rgba(0, 163, 255, 0.15);
+    }
+  }
+  
+  /* Primary Action Button - Café Study */
+  .action-primary {
+    background: var(--crema-gold);
+    color: var(--espresso);
+    @apply rounded-full px-8 py-4 font-semibold transition-all;
+    transition-duration: 0.5s;
+    font-size: 1rem;
+  }
+  
+  .action-primary:hover {
+    background: var(--crema-400);
+    transform: translateY(-1px);
+    box-shadow: 0 4px 12px rgba(200, 159, 101, 0.2);
+  }
+  
+  /* Skip Button - Ghost Style */
+  .action-skip {
+    background: transparent;
+    color: var(--skip-button);
+    border: 1px solid var(--skip-button);
+    font-weight: 500;
+    @apply rounded-full px-8 py-4 font-semibold transition-all;
+    transition-duration: 0.5s;
+    font-size: 1rem;
+  }
+  
+  .action-skip:hover {
+    background: var(--parchment);
+    border-color: var(--skip-300);
+    transform: translateY(-1px);
+  }
+  
+  /* Skip Success Message */
+  .skip-success {
+    @apply rolewithai-bubble mt-4;
+    background: rgba(237, 242, 247, 0.8);
+    border: 1px solid rgba(27, 59, 90, 0.1);
+  }
+  
+  /* Breathe Animation Background */
+  .breathe-bg {
+    position: relative;
+    overflow: hidden;
+  }
+  
+  .breathe-bg::before {
+    content: '';
+    position: absolute;
+    top: -50%;
+    left: -50%;
+    width: 200%;
+    height: 200%;
+    background: radial-gradient(circle, rgba(0, 163, 255, 0.1) 0%, transparent 70%);
+    animation: breathe 4s ease-in-out infinite;
+    pointer-events: none;
+  }
+  
+  /* History Thread - Vertical connector */
+  .history-thread {
+    position: relative;
+    padding-left: 2rem;
+  }
+  
+  .history-thread::before {
+    content: '';
+    position: absolute;
+    left: 0.75rem;
+    top: 0;
+    bottom: 0;
+    width: 2px;
+    background: linear-gradient(to bottom, #1B3B5A 0%, transparent 100%);
+  }
+  
+  .history-thread-item {
+    position: relative;
+    margin-bottom: 2rem;
+  }
+  
+  .history-thread-item::before {
+    content: '';
+    position: absolute;
+    left: -1.5rem;
+    top: 0.5rem;
+    width: 12px;
+    height: 12px;
+    border-radius: 50%;
+    background: #1B3B5A;
+    border: 2px solid white;
+  }
+  
+  /* Impact Points Gradient */
+  .impact-gradient {
+    background: linear-gradient(135deg, #1B3B5A 0%, #00A3FF 100%);
+    -webkit-background-clip: text;
+    -webkit-text-fill-color: transparent;
+    background-clip: text;
+  }
+  
+  /* Closure Note */
+  .closure-note {
+    @apply rolewithai-bubble mt-4;
+    background: rgba(240, 244, 248, 0.8);
+    border: 1px solid rgba(27, 59, 90, 0.1);
+  }
+  
+  /* Fading into Past - Rhythmic Micro-Animation for Ghosted Cards */
+  .fading-into-past {
+    animation: fade-into-past 4s ease-in-out infinite;
+    position: relative;
+  }
+  
+  @keyframes fade-into-past {
+    0%, 100% {
+      opacity: 0.4;
+      filter: blur(1px);
+      transform: scale(0.98);
+    }
+    50% {
+      opacity: 0.3;
+      filter: blur(1.5px);
+      transform: scale(0.97);
+    }
+  }
+  
+  /* Ghost Signal Visualizer Styles */
+  .signal-light {
+    transition: all 0.3s ease;
+  }
+}
