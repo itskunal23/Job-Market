@@ -9,6 +9,7 @@ interface GhostSignal {
   recruiterActivity: 'none' | 'low' | 'moderate' | 'high'
   repostFrequency: 'none' | 'low' | 'moderate' | 'high'
   sentiment: 'negative' | 'neutral' | 'positive'
+  overallScore?: number
 }
 
 interface Job {
@@ -22,44 +23,79 @@ interface Job {
   postedDaysAgo: number
   recruiterActivity: string
   ghostSignals?: GhostSignal
+  ticker?: string
+  dailyChange?: number
+  sevenDayTrend?: number[]
 }
 
 export async function getMarketInsight(): Promise<MarketInsight> {
-  // Simulate API call
-  await new Promise((resolve) => setTimeout(resolve, 100))
+  // This is now a fallback only - frontend should use backend API
+  // Fetch from backend API
+  try {
+    const response = await fetch('http://localhost:5000/api/market-insights')
+    if (response.ok) {
+      const data = await response.json()
+      if (data.success) {
+        const trending = data.trending_roles || []
+        const avgVelocity = trending.length > 0 
+          ? trending.reduce((sum: number, r: any) => sum + (r.hiring_velocity || 0), 0) / trending.length
+          : 0
+        
+        return {
+          temperature: avgVelocity > 10 ? 'high' : avgVelocity > 0 ? 'medium' : 'low',
+          message: `Market analysis: ${trending.length} trending roles detected with ${avgVelocity.toFixed(1)}% average hiring velocity.`,
+          hiringChange: avgVelocity,
+          ghostingChange: 0 // Would need community data
+        }
+      }
+    }
+  } catch (error) {
+    console.error('Error fetching market insights from backend:', error)
+  }
+  
+  // Minimal fallback (not mock data, just error state)
+  return {
+    temperature: 'low',
+    message: 'Unable to fetch market data. Please ensure backend is running.',
+    hiringChange: 0,
+    ghostingChange: 0,
+  }
+}
 
-  const insights: MarketInsight[] = [
-    {
-      temperature: 'high',
-      message:
-        'Hiring in your niche is up 4% today. 3 roles just opened that actually respond. Let\'s focus there.',
-      hiringChange: 4,
-      ghostingChange: -2,
-    },
-    {
-      temperature: 'medium',
-      message:
-        'The market is steady, but ghosting is up in Tech. We found 5 high-intent roles that match your profile.',
-      hiringChange: 1,
-      ghostingChange: 5,
-    },
-    {
-      temperature: 'low',
-      message:
-        'Hiring velocity has slowed this week, but we\'ve identified 2 companies actively interviewing. Quality over quantity.',
-      hiringChange: -3,
-      ghostingChange: 8,
-    },
-  ]
+// Generate ticker from company name
+const getTicker = (company: string): string => {
+  const words = company.split(' ')
+  if (words.length === 1) {
+    return company.substring(0, 4).toUpperCase().padEnd(4, 'X')
+  }
+  return words.map(w => w[0]).join('').toUpperCase().padEnd(4, 'X').substring(0, 4)
+}
 
-  return insights[Math.floor(Math.random() * insights.length)]
+// Generate mock 7-day trend
+const generateTrend = (currentScore: number): number[] => {
+  const trend = []
+  const volatility = 5
+  for (let i = 6; i >= 0; i--) {
+    const daysAgo = i
+    const baseScore = currentScore - (Math.random() * volatility * 2 - volatility)
+    trend.push(Math.max(0, Math.min(100, baseScore)))
+  }
+  return trend
+}
+
+// Generate daily change based on truth score and trend
+const generateDailyChange = (truthScore: number, trend: number[]): number => {
+  if (trend.length < 2) return (Math.random() * 10 - 5)
+  const yesterday = trend[trend.length - 2]
+  const today = trend[trend.length - 1]
+  return today - yesterday
 }
 
 export async function getMockJobs(): Promise<Job[]> {
   // Simulate API call
   await new Promise((resolve) => setTimeout(resolve, 100))
 
-  return [
+  const jobs: Job[] = [
     {
       id: '1',
       title: 'Senior Product Designer',
@@ -75,6 +111,9 @@ export async function getMockJobs(): Promise<Job[]> {
         repostFrequency: 'none',
         sentiment: 'positive',
       },
+      ticker: 'INVL',
+      sevenDayTrend: [82, 84, 85, 86, 86.5, 87, 87],
+      dailyChange: 0.5,
     },
     {
       id: '2',
@@ -107,6 +146,9 @@ export async function getMockJobs(): Promise<Job[]> {
         repostFrequency: 'high',
         sentiment: 'negative',
       },
+      ticker: 'TSTI',
+      sevenDayTrend: [42, 40, 38, 36, 35, 34, 35],
+      dailyChange: 1.0,
     },
     {
       id: '4',
@@ -123,6 +165,9 @@ export async function getMockJobs(): Promise<Job[]> {
         repostFrequency: 'none',
         sentiment: 'positive',
       },
+      ticker: 'CRAG',
+      sevenDayTrend: [85, 87, 88, 89, 90, 90.5, 91],
+      dailyChange: 0.5,
     },
     {
       id: '5',
@@ -139,6 +184,23 @@ export async function getMockJobs(): Promise<Job[]> {
         repostFrequency: 'moderate',
         sentiment: 'negative',
       },
+      ticker: 'CRPE',
+      sevenDayTrend: [32, 31, 30, 29, 28.5, 28, 28],
+      dailyChange: 0,
     },
   ]
+
+  // Ensure all jobs have trading data
+  return jobs.map(job => {
+    if (!job.sevenDayTrend) {
+      job.sevenDayTrend = generateTrend(job.truthScore)
+    }
+    if (job.dailyChange === undefined) {
+      job.dailyChange = generateDailyChange(job.truthScore, job.sevenDayTrend)
+    }
+    if (!job.ticker) {
+      job.ticker = getTicker(job.company)
+    }
+    return job
+  })
 }

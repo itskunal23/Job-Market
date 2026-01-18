@@ -1,3 +1,25 @@
 # RoleWithAI Python Scripts Requirements
-# No external dependencies required for the truth score calculator
-# Add any future dependencies here
+
+# Flask backend server
+flask>=2.3.0
+flask-cors>=4.0.0
+
+# Resume parsing
+PyPDF2>=3.0.0
+python-docx>=1.1.0
+
+# Web scraping (for job scraping)
+beautifulsoup4>=4.12.0
+requests>=2.31.0
+lxml>=4.9.0
+playwright>=1.40.0
+
+# LangChain for AI agent orchestration
+langchain>=0.1.0
+langchain-community>=0.0.20
+
+# Ollama for local LLM (install separately: https://ollama.ai)
+# ollama>=0.1.0  # Install via: pip install ollama (optional, for direct API access)
+
+# Core dependencies
+python-dateutil>=2.8.2

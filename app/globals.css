@@ -1,93 +1,158 @@
 @import url('https://fonts.googleapis.com/css2?family=Lora:ital,wght@0,400;0,500;0,600;1,400&display=swap');
 @import url('https://fonts.googleapis.com/css2?family=Merriweather:ital,wght@0,400;0,700;1,400&display=swap');
+@import url('https://fonts.googleapis.com/css2?family=JetBrains+Mono:wght@400;500;600;700&display=swap');
+@import url('https://fonts.googleapis.com/css2?family=Roboto+Mono:wght@400;500;600;700&display=swap');
 
 @tailwind base;
 @tailwind components;
 @tailwind utilities;
 
 :root {
-  --latte-foam: #FAF8F5;
-  --ceramic-white: #FFFFFF;
-  --crema-gold: #C89F65;
-  --cold-brew: #AFA59B;
-  --espresso: #4A3F35;
-  --parchment: #F4EFEA;
-  --border-subtle: #E5E0DA;
-  --skip-button: #8C7C6D;
+  /* Financial Trading Terminal Palette */
+  --terminal-black: #000000;
+  --terminal-dark-gray: #121212;
+  --terminal-panel: #1A1A1A;
+  --terminal-text: #E0E0E0;
+  --terminal-bullish: #00FF00;
+  --terminal-bearish: #FF3333;
+  --terminal-border: #333333;
+  --terminal-accent-green: #26A69A;
+  --terminal-accent-red: #EF5350;
+  
+  /* Legacy support (mapped to terminal palette) */
+  --latte-foam: #000000;
+  --ceramic-white: #1A1A1A;
+  --cold-brew: #333333;
+  --espresso: #E0E0E0;
+  --parchment: #121212;
+  --border-subtle: #333333;
+  --skip-button: #FF3333;
+  --midnight-roast: #E0E0E0;
 }
 
 @layer base {
   body {
-    @apply bg-latte text-espresso antialiased;
+    @apply antialiased;
     font-family: 'Inter', -apple-system, BlinkMacSystemFont, 'Segoe UI', Roboto, sans-serif;
-    background-color: var(--latte-foam);
+    background-color: var(--terminal-black);
+    color: var(--terminal-text);
+  }
+  
+  /* Monospaced font for all numbers */
+  .mono-number {
+    font-family: 'JetBrains Mono', 'Roboto Mono', 'Courier New', monospace;
+    font-variant-numeric: tabular-nums;
   }
 }
 
 @layer components {
   /* Café Study Design System */
   
-  /* Ceramic White Card - Warm, soft shadow */
+  /* Terminal Panel - Sharp edges, no rounded corners */
   .rolewithai-card {
-    background: var(--ceramic-white);
-    border-radius: 24px;
-    padding: 2rem;
-    box-shadow: 0 8px 30px rgba(74, 63, 53, 0.05);
-    transition: transform 0.5s cubic-bezier(0.4, 0, 0.2, 1), box-shadow 0.5s ease;
+    background: var(--terminal-panel);
+    border-radius: 0;
+    padding: 1rem;
+    box-shadow: none;
+    border: 1px solid var(--terminal-border);
+    transition: border-color 0.2s ease;
   }
   
   .rolewithai-card:hover {
-    transform: translateY(-2px);
-    box-shadow: 0 12px 40px rgba(74, 63, 53, 0.08);
+    transform: none;
+    box-shadow: none;
+    border-color: var(--terminal-text);
   }
   
-  /* Job Card - Wide Horizontal Layout */
+  /* Glassmorphism Panel */
+  .glass-panel {
+    background: rgba(255, 255, 255, 0.05);
+    backdrop-filter: blur(16px);
+    -webkit-backdrop-filter: blur(16px);
+    border-radius: 0;
+    border: 1px solid var(--terminal-border);
+    box-shadow: 0 8px 32px rgba(0, 0, 0, 0.3);
+  }
+  
+  /* Trading Table Row - Dense, sharp edges */
   .job-card {
     @apply rolewithai-card;
-    min-height: 200px;
+    min-height: auto;
+    padding: 0.75rem;
+    border-radius: 0;
   }
   
   .job-card-high-intent {
-    border: 2px solid var(--crema-gold);
-    animation: pulse-border 3s ease-in-out infinite;
+    border-left: 2px solid var(--terminal-bullish);
+    background: rgba(0, 255, 0, 0.05);
   }
   
   .job-card-low-truth {
-    opacity: 0.75; /* Ghost jobs de-emphasized */
+    border-left: 2px solid var(--terminal-bearish);
+    opacity: 0.7;
   }
   
-  @keyframes pulse-border {
-    0%, 100% {
-      border-color: rgba(200, 159, 101, 0.3);
-      box-shadow: 0 0 0 0 rgba(200, 159, 101, 0.1);
-    }
-    50% {
-      border-color: rgba(200, 159, 101, 0.6);
-      box-shadow: 0 0 0 4px rgba(200, 159, 101, 0.05);
-    }
+  /* Glowing text effect on data updates */
+  @keyframes flash-green {
+    0%, 100% { text-shadow: none; }
+    50% { text-shadow: 0 0 8px var(--terminal-bullish); }
   }
   
-  /* Truth Score Ring - Café Study Colors */
+  @keyframes flash-red {
+    0%, 100% { text-shadow: none; }
+    50% { text-shadow: 0 0 8px var(--terminal-bearish); }
+  }
+  
+  .flash-green {
+    animation: flash-green 0.5s ease-in-out;
+  }
+  
+  .flash-red {
+    animation: flash-red 0.5s ease-in-out;
+  }
+  
+  /* Hostile, brutal terminal glow effects */
+  .neon-glow-green {
+    text-shadow: 0 0 10px var(--terminal-bullish), 0 0 5px var(--terminal-bullish), 0 0 2px var(--terminal-bullish);
+    color: var(--terminal-bullish);
+  }
+  
+  .neon-glow-red {
+    text-shadow: 0 0 10px var(--terminal-bearish), 0 0 5px var(--terminal-bearish), 0 0 2px var(--terminal-bearish);
+    color: var(--terminal-bearish);
+    animation: flicker 2s infinite;
+  }
+  
+  /* Flicker animation for dead assets */
+  @keyframes flicker {
+    0%, 100% { opacity: 1; }
+    25% { opacity: 0.7; }
+    50% { opacity: 0.5; }
+    75% { opacity: 0.7; }
+  }
+  
+  /* Market Price Display - Terminal Style */
   .truth-score-ring {
-    font-family: 'Lora', 'Merriweather', serif;
-    font-size: 2.5rem;
-    @apply w-20 h-20 rounded-full flex items-center justify-center font-semibold;
-    transition: all 0.5s ease;
+    font-family: 'JetBrains Mono', 'Roboto Mono', monospace;
+    font-size: 2rem;
+    @apply flex items-center justify-center font-semibold;
+    transition: all 0.2s ease;
+    border-radius: 0;
   }
   
   .truth-score-high {
-    color: var(--crema-gold);
-    border: 2px solid var(--crema-gold);
+    color: var(--terminal-bullish);
+    border: 1px solid var(--terminal-bullish);
   }
   
   .truth-score-medium {
-    color: var(--espresso);
-    border: 2px solid var(--espresso);
+    color: var(--terminal-text);
+    border: 1px solid var(--terminal-border);
   }
   
   .truth-score-low {
-    color: var(--cold-brew);
-    border: 2px solid var(--cold-brew);
+    color: var(--terminal-bearish);
+    border: 1px solid var(--terminal-bearish);
   }
   
   /* Ghost Risk Badges - Café Study */
@@ -118,13 +183,13 @@
     border: 1px solid var(--border-subtle);
   }
   
-  /* RoleWithAI Voice - Warm serif for warmth */
+  /* Terminal Voice - Monospaced for data, sans-serif for text */
   .rolewithai-voice {
-    font-family: 'Lora', 'Merriweather', Georgia, serif;
-    line-height: 1.8;
-    font-size: 1.1rem;
+    font-family: 'Inter', -apple-system, BlinkMacSystemFont, 'Segoe UI', Roboto, sans-serif;
+    line-height: 1.5;
+    font-size: 0.875rem;
     font-weight: 400;
-    color: var(--espresso);
+    color: var(--terminal-text);
   }
   
   /* RoleWithAI's Direct Guidance - More prominent */
@@ -132,7 +197,7 @@
     @apply rolewithai-voice;
     font-size: 1.2rem;
     font-weight: 500;
-    color: var(--espresso);
+    color: var(--midnight-roast);
   }
   
   /* Handwritten-style support notes */
@@ -166,36 +231,47 @@
     }
   }
   
-  /* Primary Action Button - Café Study */
+  /* BUY Button - Terminal Green */
   .action-primary {
-    background: var(--crema-gold);
-    color: var(--espresso);
-    @apply rounded-full px-8 py-4 font-semibold transition-all;
-    transition-duration: 0.5s;
-    font-size: 1rem;
+    background: var(--terminal-bullish);
+    color: var(--terminal-black);
+    border-radius: 0;
+    padding: 0.5rem 1rem;
+    font-weight: 700;
+    font-family: 'JetBrains Mono', 'Roboto Mono', monospace;
+    font-size: 0.875rem;
+    text-transform: uppercase;
+    letter-spacing: 0.1em;
+    border: 1px solid var(--terminal-bullish);
+    transition: all 0.2s ease;
   }
   
   .action-primary:hover {
-    background: var(--crema-400);
-    transform: translateY(-1px);
-    box-shadow: 0 4px 12px rgba(200, 159, 101, 0.2);
+    background: var(--terminal-accent-green);
+    transform: none;
+    box-shadow: 0 0 8px rgba(0, 255, 0, 0.5);
   }
   
-  /* Skip Button - Ghost Style */
+  /* SHORT Button - Terminal Red */
   .action-skip {
     background: transparent;
-    color: var(--skip-button);
-    border: 1px solid var(--skip-button);
-    font-weight: 500;
-    @apply rounded-full px-8 py-4 font-semibold transition-all;
-    transition-duration: 0.5s;
-    font-size: 1rem;
+    color: var(--terminal-bearish);
+    border: 1px solid var(--terminal-bearish);
+    font-weight: 700;
+    font-family: 'JetBrains Mono', 'Roboto Mono', monospace;
+    font-size: 0.875rem;
+    text-transform: uppercase;
+    letter-spacing: 0.1em;
+    border-radius: 0;
+    padding: 0.5rem 1rem;
+    transition: all 0.2s ease;
   }
   
   .action-skip:hover {
-    background: var(--parchment);
-    border-color: var(--skip-300);
-    transform: translateY(-1px);
+    background: rgba(255, 51, 51, 0.1);
+    border-color: var(--terminal-bearish);
+    transform: none;
+    box-shadow: 0 0 8px rgba(255, 51, 51, 0.5);
   }
   
   /* Skip Success Message */
@@ -293,5 +369,77 @@
   /* Ghost Signal Visualizer Styles */
   .signal-light {
     transition: all 0.3s ease;
+  }
+
+  /* Timeline of Peace - Sepia Tone Effect */
+  .sepia-tone {
+    filter: sepia(20%) grayscale(10%);
+    opacity: 0.7;
+    transition: all 0.3s ease;
+  }
+
+  .sepia-tone:hover {
+    filter: sepia(10%) grayscale(5%);
+    opacity: 0.85;
+  }
+
+  /* Horizontal Scroll Smooth */
+  .horizontal-scroll {
+    scroll-behavior: smooth;
+    -webkit-overflow-scrolling: touch;
+  }
+
+  .horizontal-scroll::-webkit-scrollbar {
+    height: 6px;
+  }
+
+  .horizontal-scroll::-webkit-scrollbar-track {
+    background: var(--terminal-dark-gray);
+    border-radius: 0;
+  }
+  
+  .horizontal-scroll::-webkit-scrollbar-thumb {
+    background: var(--terminal-border);
+    border-radius: 0;
+    opacity: 0.5;
+  }
+  
+  .horizontal-scroll::-webkit-scrollbar-thumb:hover {
+    opacity: 0.8;
+    background: var(--terminal-text);
+  }
+  
+  /* Terminal Table Styles */
+  .terminal-table {
+    width: 100%;
+    border-collapse: collapse;
+    font-size: 0.75rem;
+  }
+  
+  .terminal-table th {
+    background: rgba(255, 255, 255, 0.05);
+    color: var(--terminal-text);
+    padding: 0.5rem;
+    text-align: left;
+    border-bottom: 1px solid var(--terminal-border);
+    font-weight: 600;
+    text-transform: uppercase;
+    letter-spacing: 0.05em;
+    font-family: 'Inter', -apple-system, BlinkMacSystemFont, 'Segoe UI', sans-serif;
+  }
+  
+  .terminal-table td {
+    padding: 0.5rem;
+    border-bottom: 1px solid var(--terminal-border);
+    color: var(--terminal-text);
+    font-family: 'JetBrains Mono', 'Roboto Mono', monospace;
+  }
+  
+  .terminal-table tr:hover {
+    background: rgba(255, 255, 255, 0.03);
+  }
+  
+  .terminal-table tr.group:hover {
+    background: rgba(255, 255, 255, 0.05);
   }
 }

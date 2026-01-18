@@ -9,13 +9,38 @@ const config: Config = {
   theme: {
     extend: {
       colors: {
-        // Café Study Palette
+        // Financial Trading Terminal Palette
+        terminal: {
+          black: '#000000',
+          'dark-gray': '#121212',
+          panel: '#1A1A1A',
+          text: '#E0E0E0',
+          bullish: '#00FF00',
+          bearish: '#FF3333',
+          border: '#333333',
+          'accent-green': '#26A69A',
+          'accent-red': '#EF5350',
+        },
+        // Legacy Café Study Palette (for backward compatibility)
+        cafe: {
+          bg: '#1A1A1A',      // Terminal Panel
+          dark: '#E0E0E0',    // Terminal Text
+          accent: '#26A69A',  // Terminal Accent Green
+          gold: '#00FF00',    // Terminal Bullish
+          matcha: '#00FF00',  // Terminal Bullish
+          ghost: '#FF3333',   // Terminal Bearish
+          'accent-dark': '#1A1A1A',
+          'gold-dark': '#00FF00',
+          'matcha-dark': '#00FF00',
+          'ghost-dark': '#FF3333',
+        },
+        // Legacy Café Study Palette (for backward compatibility)
         latte: {
-          DEFAULT: '#FAF8F5', // Latte Foam - Canvas background
-          50: '#FEFCFB',
-          100: '#FAF8F5',
-          200: '#F5F1EB',
-          300: '#F0EAE1',
+          DEFAULT: '#000000', // Terminal Black - Canvas background
+          50: '#121212',
+          100: '#1A1A1A',
+          200: '#333333',
+          300: '#000000',
         },
         ceramic: {
           DEFAULT: '#FFFFFF', // Ceramic White - Cards
@@ -39,13 +64,13 @@ const config: Config = {
           500: '#6A635C',
         },
         espresso: {
-          DEFAULT: '#4A3F35', // Espresso - Text on primary buttons
+          DEFAULT: '#1A2A3A', // Midnight Roast - Text (mapped to Coastal Espresso)
           50: '#F5F4F2',
           100: '#EBE9E5',
           200: '#D7D3CB',
           300: '#A79F8F',
           400: '#756F63',
-          500: '#4A3F35',
+          500: '#1A2A3A',
           600: '#3B3329',
           700: '#2C271D',
         },
@@ -69,8 +94,9 @@ const config: Config = {
       },
       fontFamily: {
         sans: ['Inter', '-apple-system', 'BlinkMacSystemFont', 'Segoe UI', 'Roboto', 'sans-serif'],
-        serif: ['Lora', 'Merriweather', 'Georgia', 'serif'], // Warm serif for headers & RoleWithAI's dialogue
-        rolewithai: ['Lora', 'Merriweather', 'Georgia', 'serif'], // RoleWithAI's conversational voice
+        mono: ['JetBrains Mono', 'Roboto Mono', 'Courier New', 'monospace'], // Monospaced for numbers
+        serif: ['Inter', 'sans-serif'], // Headers use sans-serif in terminal
+        rolewithai: ['Inter', 'sans-serif'], // Terminal voice
       },
       backdropBlur: {
         xs: '2px',
